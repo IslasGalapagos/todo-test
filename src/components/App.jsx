@@ -6,7 +6,7 @@ import {Global} from '@emotion/core';
 import TodoList from './TodoList';
 import AddTodoForm from './AddTodoForm';
 
-import {addTodo} from '../store/actions';
+import {addTodo, getTodos} from '../store/actions';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,16 +15,16 @@ class App extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getTodos();
+  }
+
   onFormSubmit(todoText) {
-    try {
-      this.props.addTodo(todoText);
-    } catch (e) {
-      console.log(e);
-    }
+    this.props.addTodo(todoText);
   }
 
   render() {
-    const {todos} = this.props;
+    const {todos, loader, addTodoLoader} = this.props;
 
     return (
       <React.StrictMode>
@@ -38,8 +38,16 @@ class App extends React.Component {
           }}
         />
 
-        <TodoList todos={todos} />
-        <AddTodoForm onSubmit={this.onFormSubmit} />
+        {loader ? (
+          <span>
+            <i>Loading...</i>
+          </span>
+        ) : (
+          <React.Fragment>
+            <TodoList todos={todos} />
+            <AddTodoForm onSubmit={this.onFormSubmit} loader={addTodoLoader} />
+          </React.Fragment>
+        )}
       </React.StrictMode>
     );
   }
@@ -47,15 +55,21 @@ class App extends React.Component {
 
 App.propTypes = {
   todos: PropTypes.array.isRequired,
-  addTodo: PropTypes.func.isRequired
+  loader: PropTypes.bool.isRequired,
+  addTodoLoader: PropTypes.bool.isRequired,
+  addTodo: PropTypes.func.isRequired,
+  getTodos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = store => ({
-  todos: store.todos
+  todos: store.todos,
+  loader: store.loader,
+  addTodoLoader: store.addTodoLoader
 });
 
 const mapDispatchToProps = dispatch => ({
-  addTodo: todoText => dispatch(addTodo(todoText))
+  addTodo: todoText => dispatch(addTodo(todoText)),
+  getTodos: todoText => dispatch(getTodos())
 });
 
 export default compose(

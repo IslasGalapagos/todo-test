@@ -15,7 +15,7 @@ const stylesForList = {
   margin: '0 0 25px 0'
 };
 
-class TodoList extends React.PureComponent {
+class TodoList extends React.Component {
   render() {
     const {todos} = this.props;
 

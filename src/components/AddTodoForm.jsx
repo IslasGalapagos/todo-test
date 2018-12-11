@@ -14,7 +14,7 @@ const stylesForInput = {
 const stylesForButton = {
   fontSize: '20px',
   display: 'block',
-  width: '80px',
+  width: '120px',
   padding: '7px',
   backgroundColor: '#90d1ff',
   border: '1px solid #0e9bff',
@@ -58,6 +58,7 @@ class AddTodoForm extends React.PureComponent {
   }
 
   render() {
+    const {loader} = this.props;
     const {inputValue} = this.state;
 
     return (
@@ -68,9 +69,10 @@ class AddTodoForm extends React.PureComponent {
           rows='3'
           value={inputValue}
           onChange={this.onInputChange}
+          disabled={loader}
         />
-        <button css={stylesForButton} type='submit'>
-          Save
+        <button css={stylesForButton} type='submit' disabled={loader}>
+          {loader ? 'Loading...' : 'Save'}
         </button>
       </form>
     );
@@ -78,6 +80,7 @@ class AddTodoForm extends React.PureComponent {
 }
 
 AddTodoForm.propTypes = {
+  loader: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired
 };
 
