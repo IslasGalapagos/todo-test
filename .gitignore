@@ -1,0 +1,15 @@
+node_modules
+.tmp
+.idea
+public
+build
+.publish
+npm-debug.log
+.DS_Store
+.env
+aws-keys.json
+.awspublish-*
+.shipit
+.env
+server/updates/*.js
+dump
