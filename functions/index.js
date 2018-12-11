@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 
 admin.initializeApp(functions.config().firebase);
@@ -9,6 +10,8 @@ const db = admin.firestore();
 const docRef = db.collection('todos').doc('AOOMAFYERqrMNyHvKYoA');
 
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(
@@ -23,7 +26,13 @@ app.get('/todos', (req, res) => {
     .then(doc => {
       if (doc.exists) {
         res.setHeader('Content-Type', 'application/json');
-        res.send(doc.data());
+
+        const data = doc.data();
+        const dataValues = Object.keys(data)
+          .sort()
+          .map(key => data[key]);
+
+        res.send(dataValues);
       } else {
         res.status(500);
         res.send('Something went wrong');
