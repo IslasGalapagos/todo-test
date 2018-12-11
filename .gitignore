@@ -13,3 +13,5 @@ aws-keys.json
 .env
 server/updates/*.js
 dump
+.firebaserc
+.firebase/*.*.cache
